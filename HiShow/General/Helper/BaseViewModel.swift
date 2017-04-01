@@ -18,7 +18,7 @@ enum RefreshStatus: Int {
     case networkerError
 }
 
-class BaseViewModel: NSObject {
+class BaseViewModel {
     let disposeBag = DisposeBag()
     
     // Variable 类型是 RxSwift 当中特有的一个类型。它是一个泛型，它的 .value 属性指向的就是它的实际参数类型。比如在这里，它的实际参数类型是 RefreshStatus，它是一个枚举类型。Variable 类型的特点在于：只要改变 value 的值，就会发射改变后的数据。

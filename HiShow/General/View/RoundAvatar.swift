@@ -25,23 +25,27 @@ let picoAvatarStyle: AvatarStyle = .roundedRectangle(size: CGSize(width: 32, hei
 
 extension RoundAvatar: Navi.Avatar {
     
-    var URL: Foundation.URL? {
+    var url: URL? {
         return avatarURL
     }
+    
     var style: AvatarStyle {
         return avatarStyle
     }
+    
     var placeholderImage: UIImage? {
         return nil
     }
+    
     var localOriginalImage: UIImage? {
         return nil
     }
+    
     var localStyledImage: UIImage? {
         return nil
     }
     
-    func saveOriginalImage(_ originalImage: UIImage, styledImage: UIImage) {
+    func save(originalImage: UIImage, styledImage: UIImage) {
         KingfisherManager.shared.cache.store(styledImage, original: nil, forKey: key, toDisk: true, completionHandler: nil)
     }
 }

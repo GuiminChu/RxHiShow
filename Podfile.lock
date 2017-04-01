@@ -9,7 +9,7 @@ PODS:
   - Moya/RxSwift (8.0.3):
     - Moya/Core
     - RxSwift (~> 3.0)
-  - Navi (1.0.0)
+  - Navi (1.1.1)
   - Result (3.2.1)
   - RxCocoa (3.3.1):
     - RxSwift (~> 3.3)
@@ -21,7 +21,7 @@ DEPENDENCIES:
   - Kingfisher (~> 3.0)
   - MJRefresh
   - Moya/RxSwift
-  - Navi (~> 1.0.0)
+  - Navi (~> 1.1.1)
   - RxCocoa (~> 3.3.1)
   - SwiftyJSON
 
@@ -31,12 +31,12 @@ SPEC CHECKSUMS:
   Kingfisher: 9950e382c500b6834ce004c7c4131c444e90c3a1
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
   Moya: d3721622e3cc0cc2f038d69a258686f0b66e7252
-  Navi: 476df37605b9af2fea9a7351d6ca81c973cc24e2
+  Navi: 9e9bd67fb17fabb31a0fca15c39e27de7bc03e94
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
   RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 6ece53738ec20faa3eddf67fe9f9e490d82e79fc
+PODFILE CHECKSUM: e5773060e0fbc9cd91c7c8b543b87168e6ed6f0d
 
 COCOAPODS: 1.2.1.beta.1

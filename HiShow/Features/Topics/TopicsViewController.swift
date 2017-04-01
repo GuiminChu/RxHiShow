@@ -15,7 +15,8 @@ import SwiftyJSON
 class TopicsViewController: UIViewController, SegueHandlerType {
 
     private let disposeBag = DisposeBag()
-    private let viewModel  = TopicsViewModel()
+    
+    private var viewModel: TopicsViewModel!
     
     enum SegueIdentifier: String {
         case ToProfileSegue
@@ -39,6 +40,18 @@ class TopicsViewController: UIViewController, SegueHandlerType {
         tableView.rx
             .setDelegate(self)
             .addDisposableTo(disposeBag)
+        
+        let loadNextPageTrigger = tableView.rx.contentOffset
+            .asDriver()
+            .throttle(0.3)
+            .flatMap { contentOffset in
+                return (contentOffset.y + self.view.frame.height > self.tableView.contentSize.height) ? Driver.just() : Driver.empty()
+            }
+        
+        //.addDisposableTo(disposeBag)
+        
+//         viewModel = TopicsViewModel(loadNextPageTrigger: loadNextPageTrigger)
+        viewModel = TopicsViewModel()
     
         viewModel.dataSource
             .asObservable()
@@ -62,6 +75,8 @@ class TopicsViewController: UIViewController, SegueHandlerType {
                 self?.performSegueWithIdentifier(SegueIdentifier.ToTopicDetailSegue, sender: topic)
             })
             .addDisposableTo(disposeBag)
+        
+
         
         viewModel.refreshStatus
             .asObservable()
@@ -92,11 +107,11 @@ class TopicsViewController: UIViewController, SegueHandlerType {
     }
     
     func pullToRefresh() {
-        viewModel.getTopics(isPullToRefresh: true)
+//        viewModel.getTopics(isPullToRefresh: true)
     }
     
     func pullToLoadMore() {
-        viewModel.getTopics(isPullToRefresh: false)
+        //viewModel.getTopics(isPullToRefresh: false)
     }
 }
 

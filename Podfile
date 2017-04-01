@@ -10,7 +10,7 @@ target 'HiShow' do
     pod 'Moya/RxSwift'
     pod 'RxCocoa', '~> 3.3.1'
     pod 'Kingfisher', '~> 3.0'
-    pod 'Navi', '~> 1.0.0'
+    pod 'Navi', '~> 1.1.1'
     pod 'MJRefresh'
     pod 'SwiftyJSON'
     pod 'GDPerformanceView-Swift'
