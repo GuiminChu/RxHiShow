@@ -29,6 +29,4 @@ extension Observable {
             return object
         })
     }
-    
-    
 }

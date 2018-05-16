@@ -17,51 +17,108 @@ class TopicsViewModel: BaseViewModel {
      var test = Observable<(Topic, RefreshStatus)>.empty()
     
     /// 分页参数，第一页为0
-    var startIndex = 0
+//    var startIndex = 0
+    
+    let startIndex = Variable(1)
     
     var isPullToRefresh = Variable<Bool>(true)
     
-//    init(loadNextPageTrigger: Driver<Void>) {
-//        
-//        loadNextPageTrigger.asObservable().subscribe(onNext: {
-//            print("load")
-//        })
-//    }
     
-      override init() {
+    var refreshStatuss = Observable<RefreshStatus>.empty()
+    
+    init(input: (refreshTriger: Observable<Void>, loadNextPageTrigger: Observable<Void>)) {
         
-//        dataSource = isPullToRefresh.asObservable().flatMapLatest { isPull in
-//            let xx = self?.getTopics(isPullToRefresh: isPull)
-//            return xx
-//        }
-        
-//        let xxx = isPullToRefresh.asObservable().map { isPull -> Observable<[Topic]> in
-//            let xx = self.getTopics(isPullToRefresh: isPull)
-//            return xx
-//        }
-        
-        dataSource = isPullToRefresh.asObservable().flatMapLatest { isPull -> Observable<[Topic]> in
-            let xx = rxHiShowProvider.request(HiShow.topics(0)).mapObject(type: TopicModel.self).map { $0.topics! }
-            return xx
-        }
+        super.init()
 
-//        dataSource = rxHiShowProvider.request(HiShow.topics(startIndex)).mapObject(type: TopicModel.self).map { topicModel in
-//            return topicModel.topics
-//        }
+        let refreshData = input.refreshTriger.debug()
+            .asObservable()
+            .map { 1 }
+            .flatMap {
+//                RxHiShowProvider.request(HiShow.topics($0)).mapObject(type: TopicModel.self).map { $0.topics! }
+                HiShowProvider.rx.request(HiShow.topics($0)).mapObject(type: TopicModel.self).map { $0.topics! }
+            }
+        
+        
+        
+//        let loadMoreData = input.loadNextPageTrigger.asObservable()
+//            .map { 1 }
+//            .scan(0) { (a, b) in
+//                print("1")
+//                return a + b
+//            }
+//            .flatMap {
+//                RxHiShowProvider.request(HiShow.topics($0)).mapObject(type: TopicModel.self).map { $0.topics! }
+//            }
+//            .scan(dataSource.v) { (acum, elem) in
+//                print("2")
+//                print(acum.count)
+//                return acum + elem
+//            }
+        
+        
+        let loadMoreData = recursivelySearch([], loadNextPageTrigger: input.loadNextPageTrigger)
+        
+        
+//        let loadMoreData1 = input.loadNextPageTrigger
+//            .asObservable()
+//            .withLatestFrom(startIndex.asDriver())
+//            .flatMap {
+//                RxHiShowProvider.request(HiShow.topics($0)).mapObject(type: TopicModel.self).map { $0.topics! }
+//            }.reduce([Topic]()) { (acum, elem) in
+//                return acum + elem
+//            }
+    
+        dataSource = Observable.from([refreshData, loadMoreData]).merge()
+        
+//         Observable.from([refreshData, loadMoreData]).merge().bindTo(dataSource)
+        
+        //refreshStatus = Observable.of(refreshData)
+ //       refreshStatuss = Observable.from([refreshData]).asObservable().map { _ in
+   //         return RefreshStatus.dropDownSuccess
+  //      }
+
+        refreshStatuss = Observable.from([refreshData.map{ _ in true }, loadMoreData.map{ _ in false}]).merge().map { isRefresh in
+            return isRefresh ? RefreshStatus.dropDownSuccess : RefreshStatus.pullSucessHasMoreData
+        }
+        
     }
     
-        func getTopics(isPullToRefresh: Bool) -> Observable<[Topic]> {
-    
-            if isPullToRefresh {
-                startIndex = 0
-            } else {
-                startIndex += 20
-            }
-    
-            let xx =  rxHiShowProvider.request(HiShow.topics(startIndex)).mapObject(type: TopicModel.self).map { $0.topics! }
+    private func recursivelySearch(_ loadedSoFar: [Topic], loadNextPageTrigger: Observable<Void>) -> Observable<[Topic]> {
+        
+        print("h1")
+        
+        return loadSearchURL(1).flatMap { newTopics -> Observable<[Topic]> in
+            var loadedTopics = loadedSoFar
+            loadedTopics.append(contentsOf: newTopics)
             
-            return xx
+            print("h2")
+            
+            return Observable.concat([Observable.just(loadedTopics),
+                                          Observable.never().takeUntil(loadNextPageTrigger), // takeUntil 接受消息直到loadNextPageTrigger发出消息
+                                          self.loadSearchURL(1)])
+            
+//            return xxxx
         }
+
+    }
+    
+    private func loadSearchURL(_ page: Int) -> Observable<[Topic]> {
+        print("h3")
+        return RxHiShowProvider.request(HiShow.topics(page)).mapObject(type: TopicModel.self).map { $0.topics! }
+    }
+    
+//    func getTopics(isPullToRefresh: Bool) -> Observable<[Topic]> {
+//        
+//        if isPullToRefresh {
+//            startIndex = 0
+//        } else {
+//            startIndex += 20
+//        }
+//        
+//        let xx =  RxHiShowProvider.request(HiShow.topics(startIndex)).mapObject(type: TopicModel.self).map { $0.topics! }
+//        
+//        return xx
+//    }
     
 //    func getTopics(isPullToRefresh: Bool) {
 //        
@@ -92,6 +149,7 @@ class TopicsViewModel: BaseViewModel {
 //    }
 }
 
+/*
 class PhgViewModel {
     let refreshTrigger = PublishSubject<Void>()
     let loadNextPageTrigger = PublishSubject<Void>()
@@ -140,3 +198,4 @@ class PhgViewModel {
         }
     }
 }
+ */

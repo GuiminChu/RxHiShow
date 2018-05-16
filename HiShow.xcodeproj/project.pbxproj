@@ -11,6 +11,8 @@
 		8EA632A8E91927A08914177D /* Pods_HiShowTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1EC226A6D0D94E812C5BDBD /* Pods_HiShowTests.framework */; };
 		971CC22CB45E056FDE8B1FA8 /* Pods_HiShow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD26E1E68D34F7B7D99856A /* Pods_HiShow.framework */; };
 		AE1B4A7C1E8509A80028B574 /* BaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE1B4A7B1E8509A80028B574 /* BaseViewModel.swift */; };
+		AE4039731ECF02830008B66A /* CacheHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4039721ECF02830008B66A /* CacheHelper.swift */; };
+		AE4075AC1ECD980700FF4E05 /* TopicsViewModelX.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4075AB1ECD980700FF4E05 /* TopicsViewModelX.swift */; };
 		AE59997E1E6570C900B1F34E /* TopicDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE59997C1E6570C900B1F34E /* TopicDetailCell.swift */; };
 		AE59997F1E6570C900B1F34E /* TopicDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE59997D1E6570C900B1F34E /* TopicDetailCell.xib */; };
 		AE61450B1E70F6A300C28667 /* ImageViewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE61450A1E70F6A300C28667 /* ImageViewingController.swift */; };
@@ -76,6 +78,8 @@
 		6D8D1BF75CC8AE620D8EFA1A /* Pods-HiShowTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HiShowTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HiShowTests/Pods-HiShowTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A1EC226A6D0D94E812C5BDBD /* Pods_HiShowTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HiShowTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE1B4A7B1E8509A80028B574 /* BaseViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewModel.swift; sourceTree = "<group>"; };
+		AE4039721ECF02830008B66A /* CacheHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheHelper.swift; sourceTree = "<group>"; };
+		AE4075AB1ECD980700FF4E05 /* TopicsViewModelX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicsViewModelX.swift; sourceTree = "<group>"; };
 		AE59997C1E6570C900B1F34E /* TopicDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopicDetailCell.swift; sourceTree = "<group>"; };
 		AE59997D1E6570C900B1F34E /* TopicDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopicDetailCell.xib; sourceTree = "<group>"; };
 		AE61450A1E70F6A300C28667 /* ImageViewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewingController.swift; sourceTree = "<group>"; };
@@ -174,6 +178,7 @@
 			children = (
 				AE6145111E71422700C28667 /* EmojiData.swift */,
 				AE1B4A7B1E8509A80028B574 /* BaseViewModel.swift */,
+				AE4039721ECF02830008B66A /* CacheHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -305,6 +310,7 @@
 				CE9E3A8A1D9222C4009CE13B /* TopicModel.swift */,
 				CE9E3A8B1D9222C4009CE13B /* TopicsViewController.swift */,
 				AEC70FBD1E83CBC400AEF0E4 /* TopicsViewModel.swift */,
+				AE4075AB1ECD980700FF4E05 /* TopicsViewModelX.swift */,
 			);
 			path = Topics;
 			sourceTree = "<group>";
@@ -633,6 +639,7 @@
 				CE9E3A941D9222C4009CE13B /* DescCell.swift in Sources */,
 				CE9E3AA11D9222C4009CE13B /* TopicModel.swift in Sources */,
 				CE9E3AA71D9222C4009CE13B /* RoundAvatar.swift in Sources */,
+				AE4075AC1ECD980700FF4E05 /* TopicsViewModelX.swift in Sources */,
 				CE9E3AA21D9222C4009CE13B /* TopicsViewController.swift in Sources */,
 				CE9E3A9E1D9222C4009CE13B /* TopicDetailViewController.swift in Sources */,
 				AE59997E1E6570C900B1F34E /* TopicDetailCell.swift in Sources */,
@@ -643,6 +650,7 @@
 				CE9E3A9C1D9222C4009CE13B /* TopicContentCell.swift in Sources */,
 				AE61451E1E714CD100C28667 /* CTFrameParser.swift in Sources */,
 				CE9E3A981D9222C4009CE13B /* ProfileViewController.swift in Sources */,
+				AE4039731ECF02830008B66A /* CacheHelper.swift in Sources */,
 				CE9E3A9B1D9222C4009CE13B /* UserInfoModel.swift in Sources */,
 				AEC70FBE1E83CBC400AEF0E4 /* TopicsViewModel.swift in Sources */,
 				AE1B4A7C1E8509A80028B574 /* BaseViewModel.swift in Sources */,
@@ -819,7 +827,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HiShow/HiShow-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -838,7 +846,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.cgm.HiShow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "HiShow/HiShow-Bridging-Header.h";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -852,7 +860,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cgm.HiShowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HiShow.app/HiShow";
 			};
 			name = Debug;
@@ -867,7 +875,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cgm.HiShowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HiShow.app/HiShow";
 			};
 			name = Release;
@@ -881,7 +889,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cgm.HiShowUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = HiShow;
 			};
 			name = Debug;
@@ -895,7 +903,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.cgm.HiShowUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = HiShow;
 			};
 			name = Release;

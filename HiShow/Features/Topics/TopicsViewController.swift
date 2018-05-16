@@ -16,16 +16,20 @@ class TopicsViewController: UIViewController, SegueHandlerType {
 
     private let disposeBag = DisposeBag()
     
-    private var viewModel: TopicsViewModel!
+    private var viewModel: TopicsViewModelX!
     
     enum SegueIdentifier: String {
         case ToProfileSegue
         case ToTopicDetailSegue
     }
     
+//    private let dataSource: Variable<[Topic]> = Variable([])
+    
     @IBOutlet weak var tableView: UITableView!
     
     
+    var refreshTriger = PublishSubject<Void>()
+    var loadNextPageTrigger = PublishSubject<Void>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,25 +41,26 @@ class TopicsViewController: UIViewController, SegueHandlerType {
         
         tableView.register(TopicItemCell.self)
         
+        viewModel = TopicsViewModelX(input: (refreshTriger: refreshTriger.debug(),
+                                             loadNextPageTrigger: loadNextPageTrigger.debug()))
+        
         tableView.rx
             .setDelegate(self)
             .addDisposableTo(disposeBag)
         
-        let loadNextPageTrigger = tableView.rx.contentOffset
-            .asDriver()
-            .throttle(0.3)
-            .flatMap { contentOffset in
-                return (contentOffset.y + self.view.frame.height > self.tableView.contentSize.height) ? Driver.just() : Driver.empty()
-            }
-        
-        //.addDisposableTo(disposeBag)
-        
-//         viewModel = TopicsViewModel(loadNextPageTrigger: loadNextPageTrigger)
-        viewModel = TopicsViewModel()
+//        viewModel.dataSource
+//            .asObservable()
+//            .subscribe(onNext: { (topics) in
+//            print("topics's count: \(topics.count)")
+//        }).addDisposableTo(disposeBag)
     
         viewModel.dataSource
             .asObservable()
             .bindTo(tableView.rx.items(cellIdentifier: TopicItemCell.reuseIdentifier, cellType: TopicItemCell.self)) { index, element, cell in
+                
+                self.tableView.mj_header.endRefreshing()
+                self.tableView.mj_footer.endRefreshing()
+                
                 cell.configure(element)
                 
                 cell.gestureRecognizer.rx.event.subscribe(onNext: { (_) in
@@ -76,11 +81,12 @@ class TopicsViewController: UIViewController, SegueHandlerType {
             })
             .addDisposableTo(disposeBag)
         
-
-        
-        viewModel.refreshStatus
+        viewModel.refreshStatuss
             .asObservable()
             .bindNext { [weak self] refreshStatus in
+                
+                print(refreshStatus)
+                
                 switch refreshStatus {
                 case .dropDownSuccess:
                     self?.tableView.mj_header.endRefreshing()
@@ -97,21 +103,44 @@ class TopicsViewController: UIViewController, SegueHandlerType {
             .addDisposableTo(disposeBag)
     }
     
+//    func initMJRefresh() {
+//        let mjHeader = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(pullToRefresh))
+//        mjHeader?.lastUpdatedTimeLabel!.isHidden = true
+//        tableView.mj_header = mjHeader
+//        tableView.mj_header.beginRefreshing()
+//        
+//        tableView.mj_footer = MJRefreshBackNormalFooter(refreshingTarget: self, refreshingAction: #selector(pullToLoadMore))
+//    }
+    
+    // 初始化 MJRefresh
     func initMJRefresh() {
-        let mjHeader = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(pullToRefresh))
-        mjHeader?.lastUpdatedTimeLabel!.isHidden = true
+        // 下拉刷新
+        let mjHeader = MJRefreshNormalHeader {
+            self.refreshTriger.onNext()
+        }
+        // 隐藏时间
+        mjHeader?.lastUpdatedTimeLabel.isHidden = true
+        // 字体颜色
+        mjHeader?.stateLabel.textColor = UIColor.lightGray
         tableView.mj_header = mjHeader
+        
+        // 马上进入刷新状态
         tableView.mj_header.beginRefreshing()
         
-        tableView.mj_footer = MJRefreshBackNormalFooter(refreshingTarget: self, refreshingAction: #selector(pullToLoadMore))
+        // 上拉加载更多
+        let mjFooter = MJRefreshBackNormalFooter {
+            self.loadNextPageTrigger.onNext()
+        }
+        tableView.mj_footer = mjFooter
     }
     
     func pullToRefresh() {
-//        viewModel.getTopics(isPullToRefresh: true)
+        refreshTriger.onNext()
     }
     
     func pullToLoadMore() {
-        //viewModel.getTopics(isPullToRefresh: false)
+        print("loadmore")
+        loadNextPageTrigger.onNext()
     }
 }
 
